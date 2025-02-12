@@ -1,16 +1,9 @@
 import { useEffect, useRef } from 'react';
 
-interface Eye {
-  x: number;
-  y: number;
-  size: number;
-}
-
 export function CatEyesBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const eyes = useRef<Eye[]>([]);
   const mousePos = useRef({ x: 0, y: 0 });
-  const blinkTimerRef = useRef<number>();
+  const eyePosition = useRef({ x: 0, y: 0 });
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -22,40 +15,53 @@ export function CatEyesBackground() {
     const resizeCanvas = () => {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
-      
-      // Initialize eyes positions
-      eyes.current = Array.from({ length: 6 }, () => ({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        size: 20 + Math.random() * 10,
-      }));
+
+      // Center the eye
+      eyePosition.current = {
+        x: canvas.width / 2,
+        y: canvas.height / 3
+      };
     };
 
     const handleMouseMove = (e: MouseEvent) => {
       mousePos.current = { x: e.clientX, y: e.clientY };
     };
 
-    const drawEye = (eye: Eye, blink: boolean) => {
+    const handleScroll = () => {
+      // Update eye vertical position based on scroll
+      if (canvas) {
+        eyePosition.current.y = (canvas.height / 3) + window.scrollY * 0.5;
+      }
+    };
+
+    const drawEye = (blink: boolean) => {
       if (!ctx) return;
+
+      const eye = eyePosition.current;
+      const size = Math.min(window.innerWidth, window.innerHeight) * 0.2; // Large eye size
 
       // Calculate angle between eye and mouse
       const dx = mousePos.current.x - eye.x;
       const dy = mousePos.current.y - eye.y;
       const angle = Math.atan2(dy, dx);
 
-      // Draw eye white
+      // Draw eye white with glow effect
+      ctx.shadowColor = 'rgba(147, 51, 234, 0.3)';
+      ctx.shadowBlur = 20;
       ctx.fillStyle = 'rgba(255, 255, 255, 0.1)';
       ctx.beginPath();
-      ctx.ellipse(eye.x, eye.y, eye.size, blink ? eye.size * 0.1 : eye.size * 0.6, 0, 0, Math.PI * 2);
+      ctx.ellipse(eye.x, eye.y, size, blink ? size * 0.1 : size * 0.6, 0, 0, Math.PI * 2);
       ctx.fill();
 
       if (!blink) {
-        // Draw pupil
-        const pupilSize = eye.size * 0.3;
-        const pupilDistance = eye.size * 0.3;
+        // Draw pupil with glow
+        const pupilSize = size * 0.4;
+        const pupilDistance = size * 0.2;
         const pupilX = eye.x + Math.cos(angle) * pupilDistance;
         const pupilY = eye.y + Math.sin(angle) * pupilDistance;
 
+        ctx.shadowColor = 'rgba(147, 51, 234, 0.5)';
+        ctx.shadowBlur = 30;
         ctx.fillStyle = 'rgba(0, 0, 0, 0.8)';
         ctx.beginPath();
         ctx.arc(pupilX, pupilY, pupilSize, 0, Math.PI * 2);
@@ -66,21 +72,22 @@ export function CatEyesBackground() {
     const animate = () => {
       if (!ctx || !canvas) return;
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      
+
       const blink = (Date.now() % 5000) < 200; // Blink every 5 seconds for 200ms
-      eyes.current.forEach(eye => drawEye(eye, blink));
+      drawEye(blink);
       requestAnimationFrame(animate);
     };
 
     window.addEventListener('mousemove', handleMouseMove);
     window.addEventListener('resize', resizeCanvas);
+    window.addEventListener('scroll', handleScroll);
     resizeCanvas();
     animate();
 
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('resize', resizeCanvas);
-      cancelAnimationFrame(blinkTimerRef.current!);
+      window.removeEventListener('scroll', handleScroll);
     };
   }, []);
 

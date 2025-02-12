@@ -1,6 +1,9 @@
 import { Navigation } from "@/components/Navigation";
 import { CatEyesBackground } from "@/components/CatEyesBackground";
 import { Hero } from "@/components/Hero";
+import { Skills } from "@/components/Skills";
+import { Experience } from "@/components/Experience";
+import { Projects } from "@/components/Projects";
 
 export default function Home() {
   return (
@@ -9,7 +12,9 @@ export default function Home() {
       <Navigation />
       <main>
         <Hero />
-        {/* Other sections will be added here */}
+        <Skills />
+        <Experience />
+        <Projects />
       </main>
     </div>
   );
