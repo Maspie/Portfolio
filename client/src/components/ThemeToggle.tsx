@@ -10,11 +10,8 @@ export function ThemeToggle() {
     // Trigger wink animation
     const canvas = document.querySelector('canvas');
     if (canvas) {
-      canvas.classList.add('winking');
-      // Set isWinking state through a custom attribute
       (canvas as any).isWinking = true;
       await new Promise(resolve => setTimeout(resolve, 300));
-      canvas.classList.remove('winking');
       (canvas as any).isWinking = false;
     }
     toggleTheme();

@@ -136,7 +136,7 @@ export function CatEyesBackground() {
   return (
     <canvas
       ref={canvasRef}
-      className="fixed inset-0 -z-10 bg-background winking"
+      className="fixed inset-0 -z-10 bg-background"
       onTransitionEnd={() => {
         isWinking.current = false;
       }}
