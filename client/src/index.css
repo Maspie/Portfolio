@@ -21,7 +21,7 @@
     @apply font-sans antialiased bg-background text-foreground transition-colors duration-300;
   }
 
-  /* Aurora gradient effect for dark mode */
+  /* Enhanced Aurora gradient effect for dark mode */
   .dark body::before {
     content: '';
     position: fixed;
@@ -29,31 +29,67 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(
-      45deg,
-      rgba(88, 28, 135, 0.1),
-      rgba(124, 58, 237, 0.1),
-      rgba(67, 56, 202, 0.1)
-    );
-    background-size: 400% 400%;
+    background: 
+      radial-gradient(circle at 50% 0%, 
+        rgba(88, 28, 135, 0.15),
+        transparent 50%),
+      radial-gradient(circle at 100% 0%, 
+        rgba(124, 58, 237, 0.1),
+        transparent 50%),
+      radial-gradient(at 0% 0%, 
+        rgba(67, 56, 202, 0.1),
+        transparent 50%),
+      radial-gradient(at 100% 100%, 
+        rgba(236, 72, 153, 0.1),
+        transparent 50%);
+    background-size: 200% 200%;
     z-index: -1;
-    animation: aurora 15s ease infinite;
+    animation: aurora 20s ease infinite;
     pointer-events: none;
   }
 
   @keyframes aurora {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
+    0%, 100% {
+      background-position: 0% 0%;
+    }
+    25% {
+      background-position: 100% 0%;
+    }
+    50% {
+      background-position: 100% 100%;
+    }
+    75% {
+      background-position: 0% 100%;
+    }
   }
 
-  /* Winking animation for theme toggle */
-  .winking {
-    animation: wink 300ms ease-in-out;
+  /* Particle animation */
+  .particle {
+    position: absolute;
+    opacity: 0;
+    animation: particle-animation 3s ease-in infinite;
   }
 
-  @keyframes wink {
-    0%, 100% { transform: scaleY(1); }
-    50% { transform: scaleY(0.1); }
+  @keyframes particle-animation {
+    0% {
+      transform: translateY(0) scale(0);
+      opacity: 0;
+    }
+    50% {
+      opacity: 0.5;
+    }
+    100% {
+      transform: translateY(-100px) scale(1);
+      opacity: 0;
+    }
+  }
+
+  /* Adjust cat eyes position */
+  .cat-eyes-container {
+    position: fixed;
+    top: 15vh; /* Move eyes higher up */
+    left: 0;
+    right: 0;
+    z-index: 0;
   }
 }
