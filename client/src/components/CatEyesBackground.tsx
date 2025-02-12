@@ -11,6 +11,7 @@ export function CatEyesBackground() {
   const leftEyePos = useRef<EyePosition>({ x: 0, y: 0 });
   const rightEyePos = useRef<EyePosition>({ x: 0, y: 0 });
   const animationFrameRef = useRef<number>();
+  const isWinking = useRef(false);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -46,10 +47,22 @@ export function CatEyesBackground() {
       mousePos.current = { x: e.clientX, y: e.clientY };
     };
 
-    const drawEye = (eyePos: EyePosition, blink: boolean) => {
+    const drawEye = (eyePos: EyePosition, blink: boolean, isRight: boolean) => {
       if (!ctx) return;
 
       const size = Math.min(window.innerWidth, window.innerHeight) * 0.12;
+
+      if (isRight && isWinking.current) {
+        // Draw winking right eye as "<"
+        ctx.strokeStyle = 'rgba(0, 0, 0, 0.8)';
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.moveTo(eyePos.x + size * 0.3, eyePos.y - size * 0.2);
+        ctx.lineTo(eyePos.x - size * 0.1, eyePos.y);
+        ctx.lineTo(eyePos.x + size * 0.3, eyePos.y + size * 0.2);
+        ctx.stroke();
+        return;
+      }
 
       // Calculate angle between eye and mouse
       const dx = mousePos.current.x - eyePos.x;
@@ -100,8 +113,8 @@ export function CatEyesBackground() {
       const blinkDuration = 200;
       const blink = (time % blinkInterval) < blinkDuration;
 
-      drawEye(leftEyePos.current, blink);
-      drawEye(rightEyePos.current, blink);
+      drawEye(leftEyePos.current, blink, false);
+      drawEye(rightEyePos.current, blink, true);
 
       animationFrameRef.current = requestAnimationFrame(animate);
     };
@@ -123,7 +136,10 @@ export function CatEyesBackground() {
   return (
     <canvas
       ref={canvasRef}
-      className="fixed inset-0 -z-10 bg-background"
+      className="fixed inset-0 -z-10 bg-background winking"
+      onTransitionEnd={() => {
+        isWinking.current = false;
+      }}
     />
   );
 }

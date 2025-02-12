@@ -7,13 +7,15 @@ export function ThemeToggle() {
   const { theme, toggleTheme } = useTheme();
 
   const handleClick = async () => {
-    // Trigger wink animation before theme change
-    const eyes = document.querySelectorAll('canvas');
-    if (eyes.length > 0) {
-      // Add a brief wink class
-      eyes[0].classList.add('winking');
+    // Trigger wink animation
+    const canvas = document.querySelector('canvas');
+    if (canvas) {
+      canvas.classList.add('winking');
+      // Set isWinking state through a custom attribute
+      (canvas as any).isWinking = true;
       await new Promise(resolve => setTimeout(resolve, 300));
-      eyes[0].classList.remove('winking');
+      canvas.classList.remove('winking');
+      (canvas as any).isWinking = false;
     }
     toggleTheme();
   };
