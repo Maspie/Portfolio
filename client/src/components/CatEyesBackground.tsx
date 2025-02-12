@@ -11,7 +11,6 @@ export function CatEyesBackground() {
   const leftEyePos = useRef<EyePosition>({ x: 0, y: 0 });
   const rightEyePos = useRef<EyePosition>({ x: 0, y: 0 });
   const animationFrameRef = useRef<number>();
-  const isWinking = useRef(false);
   const isHovered = useRef(false);
 
   useEffect(() => {
@@ -30,9 +29,9 @@ export function CatEyesBackground() {
       ctx.scale(dpr, dpr);
 
       // Position eyes closer together and higher up
-      const eyeSpacing = Math.min(window.innerWidth, window.innerHeight) * 0.1; // Reduced from 0.15
+      const eyeSpacing = Math.min(window.innerWidth, window.innerHeight) * 0.1;
       const centerX = window.innerWidth / 2;
-      const centerY = window.innerHeight * 0.2; // Moved up from centerY
+      const centerY = window.innerHeight * 0.2;
 
       leftEyePos.current = {
         x: centerX - eyeSpacing,
@@ -54,28 +53,12 @@ export function CatEyesBackground() {
       );
 
       isHovered.current = distance < 50;
-      if (isHovered.current && Math.random() < 0.1) {
-        isWinking.current = true;
-        setTimeout(() => { isWinking.current = false; }, 300);
-      }
     };
 
-    const drawEye = (eyePos: EyePosition, blink: boolean, isRight: boolean) => {
+    const drawEye = (eyePos: EyePosition, blink: boolean) => {
       if (!ctx) return;
 
-      const size = Math.min(window.innerWidth, window.innerHeight) * 0.08; // Slightly smaller eyes
-
-      if (isRight && isWinking.current) {
-        // Draw winking right eye as "<"
-        ctx.strokeStyle = 'rgba(0, 0, 0, 0.8)';
-        ctx.lineWidth = 3;
-        ctx.beginPath();
-        ctx.moveTo(eyePos.x + size * 0.3, eyePos.y - size * 0.2);
-        ctx.lineTo(eyePos.x - size * 0.1, eyePos.y);
-        ctx.lineTo(eyePos.x + size * 0.3, eyePos.y + size * 0.2);
-        ctx.stroke();
-        return;
-      }
+      const size = Math.min(window.innerWidth, window.innerHeight) * 0.08;
 
       // Calculate angle between eye and mouse
       const dx = mousePos.current.x - eyePos.x;
@@ -129,12 +112,12 @@ export function CatEyesBackground() {
 
       // Add scroll-based opacity
       const scrollY = window.scrollY;
-      const maxScroll = 500; // Adjust this value based on when you want max fade
+      const maxScroll = 500;
       const opacity = Math.max(0.3, 1 - (scrollY / maxScroll));
       ctx.globalAlpha = opacity;
 
-      drawEye(leftEyePos.current, blink, false);
-      drawEye(rightEyePos.current, blink, true);
+      drawEye(leftEyePos.current, blink);
+      drawEye(rightEyePos.current, blink);
 
       animationFrameRef.current = requestAnimationFrame(animate);
     };
@@ -160,9 +143,6 @@ export function CatEyesBackground() {
     <canvas
       ref={canvasRef}
       className="fixed inset-0 -z-10 bg-transparent transition-opacity duration-300"
-      onTransitionEnd={() => {
-        isWinking.current = false;
-      }}
     />
   );
 }

@@ -20,8 +20,8 @@ export function Navigation() {
       transition={{ duration: 0.5 }}
     >
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-        <Link href="/">
-          <a className="text-2xl font-bold">Portfolio</a>
+        <Link href="/" className="text-2xl font-bold">
+          Portfolio
         </Link>
 
         <div className="hidden md:flex items-center gap-6">
