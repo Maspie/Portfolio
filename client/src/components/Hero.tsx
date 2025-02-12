@@ -10,7 +10,7 @@ export function Hero() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.8 }}
-        className="container mx-auto grid md:grid-cols-2 gap-8 items-center"
+        className="container mx-auto grid md:grid-cols-2 gap-8 items-center pt-16"
       >
         {/* Left Column - Text Content */}
         <div className="text-left space-y-6">
@@ -94,33 +94,37 @@ export function Hero() {
           </motion.div>
         </div>
 
-        {/* Right Column - Dynamic Background */}
+        {/* Right Column - Dynamic Background for Chatbot */}
         <motion.div
           initial={{ opacity: 0, x: 50 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8, delay: 1 }}
-          className="relative hidden md:block"
+          className="relative hidden md:flex justify-center items-center"
         >
-          <div className="relative w-full h-[400px] rounded-lg overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-purple-500/20 animate-pulse" />
+          <div className="relative w-[90%] h-[500px] rounded-lg overflow-hidden mx-auto my-8">
+            <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-purple-500/10 animate-pulse" />
             <div className="absolute inset-0 backdrop-blur-sm">
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-primary/5 to-transparent animate-shine" />
             </div>
             <motion.div
               animate={{
                 background: [
-                  'radial-gradient(circle at 0% 0%, rgba(147, 51, 234, 0.2) 0%, transparent 50%)',
-                  'radial-gradient(circle at 100% 100%, rgba(147, 51, 234, 0.2) 0%, transparent 50%)',
-                  'radial-gradient(circle at 0% 0%, rgba(147, 51, 234, 0.2) 0%, transparent 50%)',
+                  'radial-gradient(circle at 50% 50%, rgba(147, 51, 234, 0.1) 0%, transparent 70%)',
+                  'radial-gradient(circle at 50% 50%, rgba(147, 51, 234, 0.15) 0%, transparent 70%)',
+                  'radial-gradient(circle at 50% 50%, rgba(147, 51, 234, 0.1) 0%, transparent 70%)',
                 ],
               }}
               transition={{
-                duration: 10,
+                duration: 4,
                 repeat: Infinity,
-                ease: "linear"
+                ease: "easeInOut"
               }}
               className="absolute inset-0"
             />
+            {/* Placeholder for future chatbot implementation */}
+            <div className="absolute inset-0 flex items-center justify-center">
+              <p className="text-muted-foreground text-lg">AI Chatbot Coming Soon</p>
+            </div>
           </div>
         </motion.div>
       </motion.div>
