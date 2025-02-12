@@ -20,23 +20,23 @@ export function Hero() {
             transition={{ duration: 0.8, delay: 0.2 }}
           >
             <h2 className="text-lg text-primary mb-2">Welcome to my portfolio</h2>
-            <h1 className="text-4xl md:text-6xl font-bold mb-4">
-              Hi, I'm{" "}
-              <motion.span 
+            <div className="text-4xl md:text-6xl font-bold mb-4 leading-tight">
+              <TypeAnimation
+                sequence={[
+                  'Hi, I\'m Jane Doe',
+                  2000,
+                  'A Web Developer',
+                  2000,
+                  'An ML Enthusiast',
+                  2000,
+                ]}
+                wrapper="div"
+                speed={50}
+                repeat={Infinity}
                 className="bg-gradient-to-r from-primary to-purple-500 dark:to-blue-500 text-transparent bg-clip-text"
-                animate={{ 
-                  backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
-                }}
-                transition={{ 
-                  duration: 5,
-                  repeat: Infinity,
-                  ease: "linear"
-                }}
                 style={{ backgroundSize: "200% 200%" }}
-              >
-                Jane Doe
-              </motion.span>
-            </h1>
+              />
+            </div>
           </motion.div>
 
           <motion.div
@@ -47,11 +47,11 @@ export function Hero() {
           >
             <TypeAnimation
               sequence={[
-                'A Full Stack Developer',
-                2000,
                 'Building Beautiful UIs',
                 2000,
                 'Creating Seamless Experiences',
+                2000,
+                'Developing ML Solutions',
                 2000
               ]}
               wrapper="span"
@@ -80,7 +80,7 @@ export function Hero() {
               <Button className="gap-2 relative overflow-hidden group">
                 <Download className="w-4 h-4 group-hover:animate-bounce" />
                 Download CV
-                <span className="absolute bottom-0 left-0 w-full h-[2px] bg-primary/50 scale-x-0 group-hover:scale-x-100 transition-transform" />
+                <span className="absolute inset-0 w-full h-full bg-primary/10 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left" />
               </Button>
             </motion.div>
 
@@ -88,22 +88,39 @@ export function Hero() {
               <Button variant="secondary" className="gap-2 relative overflow-hidden group">
                 <Send className="w-4 h-4 group-hover:rotate-45 transition-transform" />
                 Contact Me
-                <span className="absolute bottom-0 left-0 w-full h-[2px] bg-primary/50 scale-x-0 group-hover:scale-x-100 transition-transform" />
+                <span className="absolute inset-0 w-full h-full bg-primary/10 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left" />
               </Button>
             </motion.div>
           </motion.div>
         </div>
 
-        {/* Right Column - Skills Preview */}
+        {/* Right Column - Dynamic Background */}
         <motion.div
           initial={{ opacity: 0, x: 50 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8, delay: 1 }}
           className="relative hidden md:block"
         >
-          <div className="relative w-full h-[400px] bg-gradient-to-br from-primary/20 to-purple-500/20 rounded-lg p-6">
-            <div className="absolute inset-0 backdrop-blur-sm rounded-lg" />
-            {/* We'll add floating skill icons here in the next iteration */}
+          <div className="relative w-full h-[400px] rounded-lg overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-purple-500/20 animate-pulse" />
+            <div className="absolute inset-0 backdrop-blur-sm">
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-primary/5 to-transparent animate-shine" />
+            </div>
+            <motion.div
+              animate={{
+                background: [
+                  'radial-gradient(circle at 0% 0%, rgba(147, 51, 234, 0.2) 0%, transparent 50%)',
+                  'radial-gradient(circle at 100% 100%, rgba(147, 51, 234, 0.2) 0%, transparent 50%)',
+                  'radial-gradient(circle at 0% 0%, rgba(147, 51, 234, 0.2) 0%, transparent 50%)',
+                ],
+              }}
+              transition={{
+                duration: 10,
+                repeat: Infinity,
+                ease: "linear"
+              }}
+              className="absolute inset-0"
+            />
           </div>
         </motion.div>
       </motion.div>

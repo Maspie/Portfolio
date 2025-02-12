@@ -12,6 +12,7 @@ export function CatEyesBackground() {
   const rightEyePos = useRef<EyePosition>({ x: 0, y: 0 });
   const animationFrameRef = useRef<number>();
   const isWinking = useRef(false);
+  const isHovered = useRef(false);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -28,10 +29,10 @@ export function CatEyesBackground() {
       canvas.style.height = `${window.innerHeight}px`;
       ctx.scale(dpr, dpr);
 
-      // Position eyes in the center of the viewport
-      const eyeSpacing = Math.min(window.innerWidth, window.innerHeight) * 0.15;
+      // Position eyes closer together and higher up
+      const eyeSpacing = Math.min(window.innerWidth, window.innerHeight) * 0.1; // Reduced from 0.15
       const centerX = window.innerWidth / 2;
-      const centerY = window.innerHeight / 2;
+      const centerY = window.innerHeight * 0.2; // Moved up from centerY
 
       leftEyePos.current = {
         x: centerX - eyeSpacing,
@@ -45,12 +46,24 @@ export function CatEyesBackground() {
 
     const handleMouseMove = (e: MouseEvent) => {
       mousePos.current = { x: e.clientX, y: e.clientY };
+
+      // Check if mouse is hovering over either eye
+      const distance = Math.min(
+        Math.hypot(e.clientX - leftEyePos.current.x, e.clientY - leftEyePos.current.y),
+        Math.hypot(e.clientX - rightEyePos.current.x, e.clientY - rightEyePos.current.y)
+      );
+
+      isHovered.current = distance < 50;
+      if (isHovered.current && Math.random() < 0.1) {
+        isWinking.current = true;
+        setTimeout(() => { isWinking.current = false; }, 300);
+      }
     };
 
     const drawEye = (eyePos: EyePosition, blink: boolean, isRight: boolean) => {
       if (!ctx) return;
 
-      const size = Math.min(window.innerWidth, window.innerHeight) * 0.12;
+      const size = Math.min(window.innerWidth, window.innerHeight) * 0.08; // Slightly smaller eyes
 
       if (isRight && isWinking.current) {
         // Draw winking right eye as "<"
@@ -69,10 +82,11 @@ export function CatEyesBackground() {
       const dy = mousePos.current.y - eyePos.y;
       const angle = Math.atan2(dy, dx);
 
-      // Draw eye white with glow
+      // Draw eye white with enhanced glow when hovered
+      const glowIntensity = isHovered.current ? 30 : 20;
       ctx.shadowColor = 'rgba(147, 51, 234, 0.3)';
-      ctx.shadowBlur = 20;
-      ctx.fillStyle = 'rgba(255, 255, 255, 0.15)';
+      ctx.shadowBlur = glowIntensity;
+      ctx.fillStyle = isHovered.current ? 'rgba(255, 255, 255, 0.2)' : 'rgba(255, 255, 255, 0.15)';
       ctx.beginPath();
       ctx.ellipse(eyePos.x, eyePos.y, size, blink ? size * 0.1 : size * 0.6, 0, 0, Math.PI * 2);
       ctx.fill();
@@ -89,7 +103,7 @@ export function CatEyesBackground() {
         const irisY = eyePos.y + Math.sin(angle) * distance;
 
         ctx.shadowColor = 'rgba(147, 51, 234, 0.5)';
-        ctx.shadowBlur = 30;
+        ctx.shadowBlur = glowIntensity;
         ctx.fillStyle = 'rgba(0, 0, 0, 0.8)';
         ctx.beginPath();
         ctx.arc(irisX, irisY, irisSize, 0, Math.PI * 2);
@@ -113,6 +127,12 @@ export function CatEyesBackground() {
       const blinkDuration = 200;
       const blink = (time % blinkInterval) < blinkDuration;
 
+      // Add scroll-based opacity
+      const scrollY = window.scrollY;
+      const maxScroll = 500; // Adjust this value based on when you want max fade
+      const opacity = Math.max(0.3, 1 - (scrollY / maxScroll));
+      ctx.globalAlpha = opacity;
+
       drawEye(leftEyePos.current, blink, false);
       drawEye(rightEyePos.current, blink, true);
 
@@ -121,12 +141,15 @@ export function CatEyesBackground() {
 
     window.addEventListener('mousemove', handleMouseMove);
     window.addEventListener('resize', resizeCanvas);
+    window.addEventListener('scroll', () => { if (ctx) ctx.clearRect(0, 0, canvas.width, canvas.height); });
+
     resizeCanvas();
     animate();
 
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('resize', resizeCanvas);
+      window.removeEventListener('scroll', () => {});
       if (animationFrameRef.current) {
         cancelAnimationFrame(animationFrameRef.current);
       }
@@ -136,7 +159,7 @@ export function CatEyesBackground() {
   return (
     <canvas
       ref={canvasRef}
-      className="fixed inset-0 -z-10 bg-background"
+      className="fixed inset-0 -z-10 bg-transparent transition-opacity duration-300"
       onTransitionEnd={() => {
         isWinking.current = false;
       }}
