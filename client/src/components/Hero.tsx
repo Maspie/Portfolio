@@ -3,8 +3,8 @@ import { Button } from "./ui/button";
 import { Download, Send } from "lucide-react";
 import { TypeAnimation } from 'react-type-animation';
 import Particles from "@tsparticles/react";
-import { loadSlim } from "tsparticles-slim";
-import { Engine } from "tsparticles-engine";
+import { loadSlim } from "tsparticles/slim";
+import { Engine } from "tsparticles/engine";
 
 function ParticlesBackground() {
   const particlesInit = async (engine: Engine) => {
