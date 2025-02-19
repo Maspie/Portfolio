@@ -14,8 +14,8 @@ export function Hero() {
     <div className={`min-h-screen flex items-center justify-center px-4 relative ${theme === 'light' ? 'bg-[#f9f5ff]' : 'bg-background'}`}>
       {theme === 'dark' && (
         <>
-          <ParticlesBackground />
           <CatEyesBackground />
+          <ParticlesBackground />
         </>
       )}
       {theme === 'light' && (
