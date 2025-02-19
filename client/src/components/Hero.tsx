@@ -3,18 +3,29 @@ import { Button } from "./ui/button";
 import { Download, Send } from "lucide-react";
 import { TypeAnimation } from "react-type-animation";
 import Particles from "@tsparticles/react";
-import { loadSlim } from "@tsparticles/slim";
-import { Engine } from "@tsparticles/engine";
 import { ParticlesBackground } from "./ParticlesBackground";
+import { CatEyesBackground } from "./CatEyesBackground";
 import { useTheme } from "@/lib/theme";
 
 export function Hero() {
   const { theme } = useTheme();
 
   return (
-    <div className={`min-h-screen flex items-center justify-center px-4 relative ${theme === 'light' ? 'bg-[#f9f5ff]' : 'bg-background'}`}>      
-      {theme === 'dark' && <ParticlesBackground />}
-      {theme === 'light' && (
+    <div
+      className={`min-h-screen flex items-center justify-center px-4 relative ${
+        theme === "light" ? "bg-[#f9f5ff]" : "bg-background"
+      }`}
+    >
+      {/* Dark mode: Particles + Eyes */}
+      {theme === "dark" && (
+        <>
+          <ParticlesBackground />
+          <CatEyesBackground />
+        </>
+      )}
+
+      {/* Light mode: Subtle Particles */}
+      {theme === "light" && (
         <Particles
           id="tsparticles-light"
           options={{
@@ -22,7 +33,12 @@ export function Hero() {
             particles: {
               number: { value: 60, density: { enable: true, area: 800 } },
               color: { value: "#d1d5db" },
-              links: { enable: true, color: "#e5e7eb", distance: 120, opacity: 0.4 },
+              links: {
+                enable: true,
+                color: "#e5e7eb",
+                distance: 120,
+                opacity: 0.4,
+              },
               move: { enable: true, speed: 1 },
               shape: { type: "circle" },
               opacity: { value: 0.5 },
@@ -113,7 +129,10 @@ export function Hero() {
             </motion.div>
 
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-              <Button variant="secondary" className="gap-2 relative overflow-hidden group">
+              <Button
+                variant="secondary"
+                className="gap-2 relative overflow-hidden group"
+              >
                 <Send className="w-4 h-4 group-hover:rotate-45 transition-transform" />
                 Contact Me
                 <span className="absolute inset-0 w-full h-full bg-primary/10 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left" />
@@ -122,7 +141,7 @@ export function Hero() {
           </motion.div>
         </div>
 
-        {/* Right Column - Gradient Chatbot Box with Particles */}
+        {/* Right Column - Chatbot Placeholder */}
         <motion.div
           initial={{ opacity: 0, x: 50 }}
           animate={{ opacity: 1, x: 0 }}
@@ -130,9 +149,10 @@ export function Hero() {
           className="relative hidden md:flex justify-center items-center"
         >
           <div className="relative w-[90%] h-[500px] rounded-lg overflow-hidden mx-auto my-8 bg-card shadow-md">
-            {/* Placeholder for future chatbot implementation */}
             <div className="absolute inset-0 flex items-center justify-center">
-              <p className="text-muted-foreground text-lg">AI Chatbot Coming Soon</p>
+              <p className="text-muted-foreground text-lg">
+                AI Chatbot Coming Soon
+              </p>
             </div>
           </div>
         </motion.div>
