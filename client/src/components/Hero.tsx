@@ -5,15 +5,18 @@ import { TypeAnimation } from "react-type-animation";
 import Particles from "@tsparticles/react";
 import { loadSlim } from "@tsparticles/slim";
 import { Engine } from "@tsparticles/engine";
+import { ParticlesBackground } from "./ParticlesBackground";
+
 
 export function Hero() {
   return (
     <div className="min-h-screen flex items-center justify-center px-4 relative">
+      <ParticlesBackground />
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.8 }}
-        className="container mx-auto grid md:grid-cols-2 gap-8 items-center pt-16"
+        className="container mx-auto grid md:grid-cols-2 gap-8 items-center pt-16 relative z-10"
       >
         {/* Left Column - Text Content */}
         <div className="text-left space-y-6">
