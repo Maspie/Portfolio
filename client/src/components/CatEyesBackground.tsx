@@ -1,148 +1,151 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 interface EyePosition {
-  x: number;
-  y: number;
+    x: number;
+    y: number;
 }
 
 export function CatEyesBackground() {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const mousePos = useRef({ x: 0, y: 0 });
-  const leftEyePos = useRef<EyePosition>({ x: 0, y: 0 });
-  const rightEyePos = useRef<EyePosition>({ x: 0, y: 0 });
-  const animationFrameRef = useRef<number>();
-  const isHovered = useRef(false);
+    const canvasRef = useRef<HTMLCanvasElement>(null);
+    const mousePos = useRef({ x: 0, y: 0 });
+    const leftEyePos = useRef<EyePosition>({ x: 0, y: 0 });
+    const rightEyePos = useRef<EyePosition>({ x: 0, y: 0 });
+    const animationFrameRef = useRef<number>();
+    const isHovered = useRef(false);
 
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
+    // Track if dark mode is enabled
+    const [isDarkMode, setIsDarkMode] = useState(false);
 
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
+    useEffect(() => {
+        // Initial check for dark mode
+        const checkDarkMode = () => {
+            setIsDarkMode(document.documentElement.classList.contains('dark'));
+        };
 
-    const resizeCanvas = () => {
-      const dpr = window.devicePixelRatio || 1;
-      canvas.width = window.innerWidth * dpr;
-      canvas.height = window.innerHeight * dpr;
-      canvas.style.width = `${window.innerWidth}px`;
-      canvas.style.height = `${window.innerHeight}px`;
-      ctx.scale(dpr, dpr);
+        checkDarkMode();
 
-      // Position eyes closer together and higher up
-      const eyeSpacing = Math.min(window.innerWidth, window.innerHeight) * 0.1;
-      const centerX = window.innerWidth / 2;
-      const centerY = window.innerHeight * 0.2;
+        // Listen for class changes (if user toggles dark/light mode)
+        const observer = new MutationObserver(checkDarkMode);
+        observer.observe(document.documentElement, {
+            attributes: true,
+            attributeFilter: ['class'],
+        });
 
-      leftEyePos.current = {
-        x: centerX - eyeSpacing,
-        y: centerY
-      };
-      rightEyePos.current = {
-        x: centerX + eyeSpacing,
-        y: centerY
-      };
-    };
+        return () => observer.disconnect();
+    }, []);
 
-    const handleMouseMove = (e: MouseEvent) => {
-      mousePos.current = { x: e.clientX, y: e.clientY };
+    useEffect(() => {
+        if (!isDarkMode) return; // Don't run the eyes if it's light mode!
 
-      // Check if mouse is hovering over either eye
-      const distance = Math.min(
-        Math.hypot(e.clientX - leftEyePos.current.x, e.clientY - leftEyePos.current.y),
-        Math.hypot(e.clientX - rightEyePos.current.x, e.clientY - rightEyePos.current.y)
-      );
+        const canvas = canvasRef.current;
+        if (!canvas) return;
 
-      isHovered.current = distance < 50;
-    };
+        const ctx = canvas.getContext('2d');
+        if (!ctx) return;
 
-    const drawEye = (eyePos: EyePosition, blink: boolean) => {
-      if (!ctx) return;
+        const resizeCanvas = () => {
+            const dpr = window.devicePixelRatio || 1;
+            canvas.width = window.innerWidth * dpr;
+            canvas.height = window.innerHeight * dpr;
+            canvas.style.width = `${window.innerWidth}px`;
+            canvas.style.height = `${window.innerHeight}px`;
+            ctx.scale(dpr, dpr);
 
-      const size = Math.min(window.innerWidth, window.innerHeight) * 0.08;
+            const eyeSpacing = Math.min(window.innerWidth, window.innerHeight) * 0.1;
+            const centerX = window.innerWidth / 2;
+            const centerY = window.innerHeight * 0.2;
 
-      // Calculate angle between eye and mouse
-      const dx = mousePos.current.x - eyePos.x;
-      const dy = mousePos.current.y - eyePos.y;
-      const angle = Math.atan2(dy, dx);
+            leftEyePos.current = { x: centerX - eyeSpacing, y: centerY };
+            rightEyePos.current = { x: centerX + eyeSpacing, y: centerY };
+        };
 
-      // Draw eye white with enhanced glow when hovered
-      const glowIntensity = isHovered.current ? 30 : 20;
-      ctx.shadowColor = 'rgba(147, 51, 234, 0.3)';
-      ctx.shadowBlur = glowIntensity;
-      ctx.fillStyle = isHovered.current ? 'rgba(255, 255, 255, 0.2)' : 'rgba(255, 255, 255, 0.15)';
-      ctx.beginPath();
-      ctx.ellipse(eyePos.x, eyePos.y, size, blink ? size * 0.1 : size * 0.6, 0, 0, Math.PI * 2);
-      ctx.fill();
+        const handleMouseMove = (e: MouseEvent) => {
+            mousePos.current = { x: e.clientX, y: e.clientY };
 
-      if (!blink) {
-        // Draw iris with glow
-        const irisSize = size * 0.4;
-        const maxDistance = size * 0.2;
-        const distance = Math.min(
-          Math.sqrt(dx * dx + dy * dy) / 10,
-          maxDistance
-        );
-        const irisX = eyePos.x + Math.cos(angle) * distance;
-        const irisY = eyePos.y + Math.sin(angle) * distance;
+            const distance = Math.min(
+                Math.hypot(e.clientX - leftEyePos.current.x, e.clientY - leftEyePos.current.y),
+                Math.hypot(e.clientX - rightEyePos.current.x, e.clientY - rightEyePos.current.y)
+            );
 
-        ctx.shadowColor = 'rgba(147, 51, 234, 0.5)';
-        ctx.shadowBlur = glowIntensity;
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.8)';
-        ctx.beginPath();
-        ctx.arc(irisX, irisY, irisSize, 0, Math.PI * 2);
-        ctx.fill();
+            isHovered.current = distance < 50;
+        };
 
-        // Add highlight
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
-        ctx.beginPath();
-        ctx.arc(irisX - irisSize * 0.2, irisY - irisSize * 0.2, irisSize * 0.3, 0, Math.PI * 2);
-        ctx.fill();
-      }
-    };
+        const drawEye = (eyePos: EyePosition, blink: boolean) => {
+            if (!ctx) return;
 
-    const animate = () => {
-      if (!ctx || !canvas) return;
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+            const size = Math.min(window.innerWidth, window.innerHeight) * 0.08;
+            const dx = mousePos.current.x - eyePos.x;
+            const dy = mousePos.current.y - eyePos.y;
+            const angle = Math.atan2(dy, dx);
 
-      // Random blink every 4-6 seconds
-      const time = Date.now();
-      const blinkInterval = 5000;
-      const blinkDuration = 200;
-      const blink = (time % blinkInterval) < blinkDuration;
+            const glowIntensity = isHovered.current ? 30 : 20;
+            ctx.shadowColor = 'rgba(147, 51, 234, 0.3)';
+            ctx.shadowBlur = glowIntensity;
+            ctx.fillStyle = isHovered.current ? 'rgba(255, 255, 255, 0.2)' : 'rgba(255, 255, 255, 0.15)';
+            ctx.beginPath();
+            ctx.ellipse(eyePos.x, eyePos.y, size, blink ? size * 0.1 : size * 0.6, 0, 0, Math.PI * 2);
+            ctx.fill();
 
-      // Add scroll-based opacity
-      const scrollY = window.scrollY;
-      const maxScroll = 500;
-      const opacity = Math.max(0.3, 1 - (scrollY / maxScroll));
-      ctx.globalAlpha = opacity;
+            if (!blink) {
+                const irisSize = size * 0.4;
+                const maxDistance = size * 0.2;
+                const distance = Math.min(Math.sqrt(dx * dx + dy * dy) / 10, maxDistance);
+                const irisX = eyePos.x + Math.cos(angle) * distance;
+                const irisY = eyePos.y + Math.sin(angle) * distance;
 
-      drawEye(leftEyePos.current, blink);
-      drawEye(rightEyePos.current, blink);
+                ctx.shadowColor = 'rgba(147, 51, 234, 0.5)';
+                ctx.shadowBlur = glowIntensity;
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.8)';
+                ctx.beginPath();
+                ctx.arc(irisX, irisY, irisSize, 0, Math.PI * 2);
+                ctx.fill();
 
-      animationFrameRef.current = requestAnimationFrame(animate);
-    };
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
+                ctx.beginPath();
+                ctx.arc(irisX - irisSize * 0.2, irisY - irisSize * 0.2, irisSize * 0.3, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        };
 
-    window.addEventListener('mousemove', handleMouseMove);
-    window.addEventListener('resize', resizeCanvas);
-    window.addEventListener('scroll', () => { if (ctx) ctx.clearRect(0, 0, canvas.width, canvas.height); });
+        const animate = () => {
+            if (!ctx || !canvas) return;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    resizeCanvas();
-    animate();
+            const time = Date.now();
+            const blinkInterval = 5000;
+            const blinkDuration = 200;
+            const blink = (time % blinkInterval) < blinkDuration;
 
-    return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
-      window.removeEventListener('resize', resizeCanvas);
-      window.removeEventListener('scroll', () => {});
-      if (animationFrameRef.current) {
-        cancelAnimationFrame(animationFrameRef.current);
-      }
-    };
-  }, []);
+            const scrollY = window.scrollY;
+            const maxScroll = 500;
+            const opacity = Math.max(0.3, 1 - scrollY / maxScroll);
+            ctx.globalAlpha = opacity;
 
-  return (
-    <canvas
-      ref={canvasRef}
-      className="fixed inset-0 -z-10 bg-transparent transition-opacity duration-300"
-    />
-  );
+            drawEye(leftEyePos.current, blink);
+            drawEye(rightEyePos.current, blink);
+
+            animationFrameRef.current = requestAnimationFrame(animate);
+        };
+
+        window.addEventListener('mousemove', handleMouseMove);
+        window.addEventListener('resize', resizeCanvas);
+
+        resizeCanvas();
+        animate();
+
+        return () => {
+            window.removeEventListener('mousemove', handleMouseMove);
+            window.removeEventListener('resize', resizeCanvas);
+            if (animationFrameRef.current) cancelAnimationFrame(animationFrameRef.current);
+        };
+    }, [isDarkMode]);
+
+    if (!isDarkMode) return null; // Don't render in light mode
+
+    return (
+        <canvas
+            ref={canvasRef}
+            className="fixed inset-0 -z-10 bg-transparent transition-opacity duration-300"
+        />
+    );
 }
