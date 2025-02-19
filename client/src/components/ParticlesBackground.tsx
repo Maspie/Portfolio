@@ -23,7 +23,7 @@ export function ParticlesBackground() {
           id="tsparticles"
           particlesLoaded={particlesLoaded}
           options={{
-            fullScreen: { enable: true, zIndex: -5 },
+            fullScreen: { enable: true, zIndex: -15 },
             background: {
               color: {
                 value: "#0A0212", // Dark purple shade
