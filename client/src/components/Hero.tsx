@@ -6,12 +6,34 @@ import Particles from "@tsparticles/react";
 import { loadSlim } from "@tsparticles/slim";
 import { Engine } from "@tsparticles/engine";
 import { ParticlesBackground } from "./ParticlesBackground";
-
+import { useTheme } from "@/lib/theme";
 
 export function Hero() {
+  const { theme } = useTheme();
+
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 relative">
-      <ParticlesBackground />
+    <div className={`min-h-screen flex items-center justify-center px-4 relative ${theme === 'light' ? 'bg-[#f9f5ff]' : 'bg-background'}`}>      
+      {theme === 'dark' && <ParticlesBackground />}
+      {theme === 'light' && (
+        <Particles
+          id="tsparticles-light"
+          options={{
+            background: { color: "#f9f5ff" },
+            particles: {
+              number: { value: 60, density: { enable: true, area: 800 } },
+              color: { value: "#d1d5db" },
+              links: { enable: true, color: "#e5e7eb", distance: 120, opacity: 0.4 },
+              move: { enable: true, speed: 1 },
+              shape: { type: "circle" },
+              opacity: { value: 0.5 },
+              size: { value: 2 },
+            },
+            detectRetina: true,
+          }}
+          className="absolute inset-0 -z-10"
+        />
+      )}
+
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -107,30 +129,7 @@ export function Hero() {
           transition={{ duration: 0.8, delay: 1 }}
           className="relative hidden md:flex justify-center items-center"
         >
-          <div className="relative w-[90%] h-[500px] rounded-lg overflow-hidden mx-auto my-8">
-            {/* Subtle Gradient Background */}
-            <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-purple-500/10 animate-pulse" />
-            <div className="absolute inset-0 backdrop-blur-sm">
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-primary/5 to-transparent animate-shine" />
-            </div>
-
-            {/* Subtle Particles Inside the Box */}
-            <Particles
-              id="tsparticles"
-              options={{
-                fullScreen: { enable: false },
-                background: { color: "transparent" },
-                particles: {
-                  number: { value: 40, density: { enable: true, area: 500 } },
-                  color: { value: "#a855f7" },
-                  opacity: { value: 0.3 },
-                  size: { value: 3 },
-                  move: { enable: true, speed: 1 },
-                },
-              }}
-              className="absolute inset-0"
-            />
-
+          <div className="relative w-[90%] h-[500px] rounded-lg overflow-hidden mx-auto my-8 bg-card shadow-md">
             {/* Placeholder for future chatbot implementation */}
             <div className="absolute inset-0 flex items-center justify-center">
               <p className="text-muted-foreground text-lg">AI Chatbot Coming Soon</p>
