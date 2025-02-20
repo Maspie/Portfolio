@@ -1,5 +1,5 @@
 import { Navigation } from "@/components/Navigation";
-import { GlowingClockBackground } from "@/components/CatEyesBackground";
+import GlowingClockBackground from "@/components/CatEyesBackground";
 import { Hero } from "@/components/Hero";
 import { Skills } from "@/components/Skills";
 import { Experience } from "@/components/Experience";
