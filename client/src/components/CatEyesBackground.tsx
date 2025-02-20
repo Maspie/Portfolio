@@ -5,7 +5,7 @@ interface Position {
   y: number;
 }
 
-export function GlowingClockBackground() {
+export default function GlowingClockBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const mousePos = useRef({ x: 0, y: 0 });
   const clockCenter = useRef<Position>({ x: 0, y: 0 });
