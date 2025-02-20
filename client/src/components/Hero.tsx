@@ -4,7 +4,6 @@ import { Download, Send } from "lucide-react";
 import { TypeAnimation } from "react-type-animation";
 import Particles from "@tsparticles/react";
 import { ParticlesBackground } from "./ParticlesBackground";
-import GlowingClockBackground from "./CatEyesBackground"; // Import aliasing is fine
 import { useTheme } from "@/lib/theme";
 
 export function Hero() {
@@ -16,12 +15,7 @@ export function Hero() {
         theme === "light" ? "bg-[#f9f5ff]" : "bg-background"
       }`}
     >
-      {theme === "dark" && (
-        <>
-          <GlowingClockBackground />
-          <ParticlesBackground />
-        </>
-      )}
+      {theme === "dark" && <ParticlesBackground />}
       {theme === "light" && (
         <Particles
           id="tsparticles-light"
