@@ -4,7 +4,7 @@ import { Download, Send } from "lucide-react";
 import { TypeAnimation } from "react-type-animation";
 import Particles from "@tsparticles/react";
 import { ParticlesBackground } from "./ParticlesBackground";
-import { CatEyesBackground } from "./CatEyesBackground";
+import GlowingClockBackground from "./CatEyesBackground";
 import { useTheme } from "@/lib/theme";
 
 export function Hero() {
