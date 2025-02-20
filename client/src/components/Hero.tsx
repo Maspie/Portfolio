@@ -4,21 +4,25 @@ import { Download, Send } from "lucide-react";
 import { TypeAnimation } from "react-type-animation";
 import Particles from "@tsparticles/react";
 import { ParticlesBackground } from "./ParticlesBackground";
-import GlowingClockBackground from "./CatEyesBackground";
+import GlowingClockBackground from "./CatEyesBackground"; // Import aliasing is fine
 import { useTheme } from "@/lib/theme";
 
 export function Hero() {
   const { theme } = useTheme();
 
   return (
-    <div className={`min-h-screen flex items-center justify-center px-4 relative ${theme === 'light' ? 'bg-[#f9f5ff]' : 'bg-background'}`}>
-      {theme === 'dark' && (
+    <div
+      className={`min-h-screen flex items-center justify-center px-4 relative ${
+        theme === "light" ? "bg-[#f9f5ff]" : "bg-background"
+      }`}
+    >
+      {theme === "dark" && (
         <>
-          <CatEyesBackground />
+          <GlowingClockBackground />
           <ParticlesBackground />
         </>
       )}
-      {theme === 'light' && (
+      {theme === "light" && (
         <Particles
           id="tsparticles-light"
           options={{
