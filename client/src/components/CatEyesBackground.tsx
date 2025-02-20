@@ -1,15 +1,14 @@
 import { useEffect, useRef, useState } from 'react';
 
-interface ClockPosition {
+interface Position {
   x: number;
   y: number;
 }
 
-export function CatEyesBackground() {
+export function GlowingClockBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const mousePos = useRef({ x: 0, y: 0 });
-  const leftClockPos = useRef<ClockPosition>({ x: 0, y: 0 });
-  const rightClockPos = useRef<ClockPosition>({ x: 0, y: 0 });
+  const clockCenter = useRef<Position>({ x: 0, y: 0 });
   const animationFrameRef = useRef<number>();
   const isHovered = useRef(false);
 
@@ -21,9 +20,11 @@ export function CatEyesBackground() {
     };
 
     checkDarkMode();
-
     const observer = new MutationObserver(checkDarkMode);
-    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['class'],
+    });
 
     return () => observer.disconnect();
   }, []);
@@ -44,75 +45,86 @@ export function CatEyesBackground() {
       canvas.style.height = `${window.innerHeight}px`;
       ctx.scale(dpr, dpr);
 
-      const spacing = Math.min(window.innerWidth, window.innerHeight) * 0.1;
-      const centerX = window.innerWidth / 2;
-      const centerY = window.innerHeight * 0.2;
-
-      leftClockPos.current = { x: centerX - spacing, y: centerY };
-      rightClockPos.current = { x: centerX + spacing, y: centerY };
+      clockCenter.current = {
+        x: window.innerWidth / 2,
+        y: window.innerHeight * 0.3, // Top-ish position
+      };
     };
 
     const handleMouseMove = (e: MouseEvent) => {
       mousePos.current = { x: e.clientX, y: e.clientY };
 
-      const distLeft = Math.hypot(e.clientX - leftClockPos.current.x, e.clientY - leftClockPos.current.y);
-      const distRight = Math.hypot(e.clientX - rightClockPos.current.x, e.clientY - rightClockPos.current.y);
+      const distance = Math.hypot(
+        e.clientX - clockCenter.current.x,
+        e.clientY - clockCenter.current.y
+      );
 
-      const minDist = Math.min(distLeft, distRight);
-      isHovered.current = minDist < 60;
+      isHovered.current = distance < 100; // Glow more when near clock
     };
 
-    const drawClock = (clockPos: ClockPosition) => {
-      const baseSize = Math.min(window.innerWidth, window.innerHeight) * 0.08;
-      const glowIntensity = isHovered.current ? 30 : 15;
+    const drawClock = () => {
+      const { x, y } = clockCenter.current;
+      const radius = Math.min(window.innerWidth, window.innerHeight) * 0.1;
 
-      const dx = mousePos.current.x - clockPos.x;
-      const dy = mousePos.current.y - clockPos.y;
-      const minuteAngle = Math.atan2(dy, dx);
-      const hourAngle = (Date.now() / 20000) % (2 * Math.PI);
+      const now = new Date();
+      const hourAngle =
+        ((now.getHours() % 12) + now.getMinutes() / 60) * (Math.PI / 6);
+      const minuteAngle =
+        Math.atan2(
+          mousePos.current.y - y,
+          mousePos.current.x - x
+        ) + Math.PI / 2; // Minute hand tracks mouse
 
-      ctx.shadowColor = `rgba(147, 51, 234, ${isHovered.current ? 0.7 : 0.4})`;
+      const glowIntensity = isHovered.current ? 35 : 15;
+      const clockOpacity = isHovered.current ? 0.7 : 0.4;
+
+      // Background subtle fade circle
+      ctx.beginPath();
+      ctx.arc(x, y, radius * 1.4, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(60, 20, 80, ${clockOpacity * 0.1})`;
+      ctx.fill();
+
+      // Outer glowing clock circle
+      ctx.shadowColor = 'rgba(147, 51, 234, 0.6)';
       ctx.shadowBlur = glowIntensity;
-      ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
+      ctx.strokeStyle = `rgba(255, 255, 255, ${clockOpacity})`;
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.arc(x, y, radius, 0, Math.PI * 2);
+      ctx.stroke();
+
+      // Hour Hand (Short)
+      ctx.strokeStyle = `rgba(255, 255, 255, ${clockOpacity})`;
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.moveTo(x, y);
+      ctx.lineTo(
+        x + Math.cos(hourAngle - Math.PI / 2) * (radius * 0.5),
+        y + Math.sin(hourAngle - Math.PI / 2) * (radius * 0.5)
+      );
+      ctx.stroke();
+
+      // Minute Hand (Long, tracks mouse)
+      ctx.strokeStyle = `rgba(180, 100, 255, ${clockOpacity})`;
       ctx.lineWidth = 2;
-
       ctx.beginPath();
-      ctx.arc(clockPos.x, clockPos.y, baseSize, 0, Math.PI * 2);
+      ctx.moveTo(x, y);
+      ctx.lineTo(
+        x + Math.cos(minuteAngle) * (radius * 0.8),
+        y + Math.sin(minuteAngle) * (radius * 0.8)
+      );
       ctx.stroke();
 
-      const minuteLength = baseSize * 0.7;
-      const hourLength = baseSize * 0.5;
-
-      ctx.strokeStyle = 'rgba(255, 255, 255, 0.9)';
+      // Center point
+      ctx.fillStyle = `rgba(255, 255, 255, ${clockOpacity})`;
       ctx.beginPath();
-      ctx.moveTo(clockPos.x, clockPos.y);
-      ctx.lineTo(clockPos.x + Math.cos(minuteAngle) * minuteLength, clockPos.y + Math.sin(minuteAngle) * minuteLength);
-      ctx.stroke();
-
-      ctx.strokeStyle = 'rgba(255, 255, 255, 0.5)';
-      ctx.beginPath();
-      ctx.moveTo(clockPos.x, clockPos.y);
-      ctx.lineTo(clockPos.x + Math.cos(hourAngle) * hourLength, clockPos.y + Math.sin(hourAngle) * hourLength);
-      ctx.stroke();
-
-      ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
-      ctx.beginPath();
-      ctx.arc(clockPos.x, clockPos.y, 3, 0, Math.PI * 2);
+      ctx.arc(x, y, 3, 0, Math.PI * 2);
       ctx.fill();
     };
 
     const animate = () => {
-      if (!ctx) return;
-
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-      const scrollY = window.scrollY;
-      const maxScroll = 500;
-      ctx.globalAlpha = Math.max(0.3, 1 - scrollY / maxScroll);
-
-      drawClock(leftClockPos.current);
-      drawClock(rightClockPos.current);
-
+      drawClock();
       animationFrameRef.current = requestAnimationFrame(animate);
     };
 
@@ -131,5 +143,10 @@ export function CatEyesBackground() {
 
   if (!isDarkMode) return null;
 
-  return <canvas ref={canvasRef} className="fixed inset-0 -z-10 bg-transparent transition-opacity duration-300" />;
+  return (
+    <canvas
+      ref={canvasRef}
+      className="fixed inset-0 -z-10 bg-transparent transition-opacity duration-300"
+    />
+  );
 }
