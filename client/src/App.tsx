@@ -8,7 +8,7 @@ import { ThemeProvider } from "./lib/theme";
 function Router() {
   return (
     <Switch>
-      <Route path="/" component={Hero} />
+      <Route path="/" component={Home} />
     </Switch>
   );
 }
