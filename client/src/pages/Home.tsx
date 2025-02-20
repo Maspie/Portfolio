@@ -9,7 +9,7 @@ import { Contact } from "@/components/Contact";
 export default function Home() {
   return (
     <div className="min-h-screen">
-      <CatEyesBackground />
+      <GlowingClockBackground />
       <Navigation />
       <main>
         <Hero />
