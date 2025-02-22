@@ -31,6 +31,13 @@ const projects = [
     github: "https://github.com/Maspie/neuro-disease-detection",
     live: "",
   },
+  {
+    title: "Error-Correcting Image Codec",
+    description: "Implemented an image compression and error correction framework using Discrete Cosine Transform (DCT) and Reed-Solomon coding. The system ensures robust image recovery even in the presence of transmission-induced errors.",
+    technologies: ["Python", "DCT", "Reed-Solomon", "Matplotlib", "NumPy"],
+    github: "https://github.com/Maspie/Error-Correcting-Image-Codec",
+    live: "",
+  },
 ];
 
 export function Projects() {
