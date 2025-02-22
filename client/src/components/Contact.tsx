@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Send, Mail, Github, Linkedin, Twitter } from "lucide-react";
+import { Send, Mail, Github, Linkedin } from "lucide-react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
@@ -10,13 +10,12 @@ export function Contact() {
 
   const onSubmit = (data: any) => {
     console.log(data);
-    // TODO: Implement form submission
+    // TODO: Implement form submission (Send email via backend or API)
   };
 
   const socialLinks = [
-    { icon: Github, href: "#", label: "GitHub" },
-    { icon: Linkedin, href: "#", label: "LinkedIn" },
-    { icon: Twitter, href: "#", label: "Twitter" },
+    { icon: Github, href: "https://github.com/Maspie", label: "GitHub" },
+    { icon: Linkedin, href: "https://linkedin.com/in/toshal-warke", label: "LinkedIn" },
   ];
 
   return (
@@ -41,7 +40,7 @@ export function Contact() {
           >
             <h3 className="text-2xl font-semibold mb-4">Get in Touch</h3>
             <p className="text-muted-foreground mb-8">
-              I'm always open to new opportunities and interesting projects. 
+              I'm always open to new opportunities and collaborations. 
               Feel free to reach out!
             </p>
 
@@ -52,7 +51,7 @@ export function Contact() {
                 </div>
                 <div>
                   <h4 className="font-medium">Email</h4>
-                  <p className="text-muted-foreground">hello@example.com</p>
+                  <p className="text-muted-foreground">twarke1@asu.edu</p>
                 </div>
               </div>
             </div>
@@ -62,6 +61,8 @@ export function Contact() {
                 <motion.a
                   key={link.label}
                   href={link.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.95 }}
                   className="bg-card hover:bg-primary/10 p-3 rounded-full transition-colors"
