@@ -3,22 +3,16 @@ import { Briefcase } from "lucide-react";
 
 const experiences = [
   {
-    title: "Senior Full Stack Developer",
-    company: "Tech Solutions Inc.",
-    period: "2022 - Present",
-    description: "Led development of enterprise web applications using React and Node.js. Implemented CI/CD pipelines and mentored junior developers.",
+    title: "Software Engineer",
+    company: "ThinkFuture Technologies",
+    period: "March 2021 - June 2023",
+    description: "Developed AI-driven metamorphic testing frameworks, boosting edge-case coverage by 20% and uncovering hidden defects in complex queries. Implemented ML-based test case selection, reducing manual effort by 30% and accelerating regression cycles. Mentored junior engineers, reducing onboarding time by 25% and improving team productivity by 20%.",
   },
   {
-    title: "Full Stack Developer",
-    company: "Digital Innovations Co.",
-    period: "2020 - 2022",
-    description: "Developed and maintained multiple client projects. Improved application performance by 40% through optimization techniques.",
-  },
-  {
-    title: "Frontend Developer",
-    company: "Creative Web Agency",
-    period: "2018 - 2020",
-    description: "Created responsive web applications using React and TypeScript. Collaborated with designers to implement pixel-perfect UIs.",
+    title: "Data Analyst Intern",
+    company: "Pratham Software",
+    period: "May 2020 - September 2020",
+    description: "Created interactive dashboards and visualizations using Python, Seaborn, and Tableau, improving decision-making efficiency by 15%. Optimized Azure Blob Storage architecture, increasing data efficiency by 30% and ensuring 99.9% uptime.",
   },
 ];
 
