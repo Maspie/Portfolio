@@ -45,6 +45,13 @@ const projects = [
     github: "https://github.com/Maspie/Emotion-Detection-from-a-video-streaming",
     live: "",
   },
+  {
+    title: "Face Detection & Recognition for User Authentication",
+    description: "Developed a face recognition system for secure authentication using OpenCV, Haarcascade, and deep learning techniques. Trained on custom images extracted from ID documents.",
+    technologies: ["Python", "OpenCV", "Face Recognition", "Deep Learning"],
+    github: "https://github.com/Maspie/Face-Detection-and-Recognition-for-User-Authentication",
+    live: "",
+  },
 ];
 
 export function Projects() {
