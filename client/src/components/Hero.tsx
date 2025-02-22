@@ -47,7 +47,12 @@ export function Hero() {
             <h2 className="text-lg text-primary mb-2">Welcome to my portfolio</h2>
             <div className="text-4xl md:text-6xl font-bold mb-4 leading-tight">
               <TypeAnimation
-                sequence={["Hi, I'm Jane Doe", 2000, "A Web Developer", 2000, "An ML Enthusiast", 2000]}
+                sequence={[
+                  "Hi, I'm Toshal Warke", 2000,
+                  "A Machine Learning Engineer", 2000,
+                  "An AI Researcher", 2000,
+                  "A Software Developer", 2000
+                ]}
                 wrapper="div"
                 speed={50}
                 repeat={Infinity}
@@ -59,7 +64,11 @@ export function Hero() {
 
           <motion.div initial={{ y: 50, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 0.8, delay: 0.4 }} className="text-xl md:text-2xl text-muted-foreground h-[60px]">
             <TypeAnimation
-              sequence={["Building Beautiful UIs", 2000, "Creating Seamless Experiences", 2000, "Developing ML Solutions", 2000]}
+              sequence={[
+                "Building AI-driven solutions", 2000,
+                "Enhancing Machine Learning models", 2000,
+                "Developing NLP & Computer Vision applications", 2000
+              ]}
               wrapper="span"
               speed={50}
               repeat={Infinity}
@@ -67,14 +76,16 @@ export function Hero() {
           </motion.div>
 
           <motion.p className="text-lg text-muted-foreground max-w-2xl" initial={{ y: 50, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 0.8, delay: 0.6 }}>
-            Passionate about crafting beautiful and functional web experiences that make a difference.
+            Passionate about solving real-world problems with AI, Deep Learning, and Natural Language Processing. 
+            With expertise in Python, TensorFlow, PyTorch, and cloud technologies like AWS & Azure, I build AI models 
+            that enhance efficiency and drive innovation.
           </motion.p>
 
           <motion.div className="flex gap-4" initial={{ y: 50, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 0.8, delay: 0.8 }}>
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
               <Button className="gap-2 relative overflow-hidden group">
                 <Download className="w-4 h-4 group-hover:animate-bounce" />
-                Download CV
+                <a href="/Toshal_Warke_Resume.pdf" download>Download CV</a>
                 <span className="absolute inset-0 w-full h-full bg-primary/10 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left" />
               </Button>
             </motion.div>
@@ -82,7 +93,7 @@ export function Hero() {
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
               <Button variant="secondary" className="gap-2 relative overflow-hidden group">
                 <Send className="w-4 h-4 group-hover:rotate-45 transition-transform" />
-                Contact Me
+                <a href="mailto:twarke1@asu.edu">Contact Me</a>
                 <span className="absolute inset-0 w-full h-full bg-primary/10 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left" />
               </Button>
             </motion.div>
