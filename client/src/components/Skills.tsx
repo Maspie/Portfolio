@@ -1,36 +1,36 @@
 import { motion } from "framer-motion";
-import { Code2, Palette, Globe2, Database, Terminal, GitBranch } from "lucide-react";
+import { Code2, Brain, Database, Terminal, GitBranch, Cloud, BarChart3, Layers } from "lucide-react";
 
 const skills = [
   {
-    icon: Code2,
-    title: "Frontend Development",
-    description: "React, TypeScript, Tailwind CSS",
+    icon: Brain,
+    title: "Machine Learning & AI",
+    description: "TensorFlow, PyTorch, Keras, OpenCV, Scikit-Learn",
   },
   {
     icon: Database,
-    title: "Backend Development",
-    description: "Node.js, Express, PostgreSQL",
+    title: "Data Engineering & Databases",
+    description: "SQL, PostgreSQL, MongoDB, Apache Spark, PySpark",
   },
   {
-    icon: Palette,
-    title: "UI/UX Design",
-    description: "Figma, Adobe XD, Responsive Design",
+    icon: Layers,
+    title: "Deep Learning & Computer Vision",
+    description: "CNNs, YOLOv8, Image Segmentation, Object Detection",
   },
   {
-    icon: Globe2,
-    title: "Web Technologies",
-    description: "HTML5, CSS3, JavaScript ES6+",
+    icon: BarChart3,
+    title: "Data Science & Analytics",
+    description: "Pandas, NumPy, Matplotlib, Seaborn, Power BI, Tableau",
   },
   {
-    icon: Terminal,
-    title: "DevOps",
-    description: "Docker, CI/CD, AWS",
+    icon: Cloud,
+    title: "Cloud & DevOps",
+    description: "AWS, Microsoft Azure, Docker, CI/CD, Kubernetes",
   },
   {
     icon: GitBranch,
-    title: "Version Control",
-    description: "Git, GitHub, GitLab",
+    title: "Version Control & Collaboration",
+    description: "Git, GitHub, GitLab, JIRA, Asana",
   },
 ];
 
