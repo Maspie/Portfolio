@@ -4,25 +4,32 @@ import { Button } from "./ui/button";
 
 const projects = [
   {
-    title: "E-commerce Platform",
-    description: "A full-stack e-commerce solution with real-time inventory management and payment processing.",
-    technologies: ["React", "Node.js", "PostgreSQL", "Stripe"],
-    github: "#",
-    live: "#",
+    title: "Cross-Camera Action & Identity Recognition",
+    description: "Developed an action recognition model using TensorFlow, JAX, and XLA, increasing detection accuracy by 25%. Built a YOLOv8 feature extractor to match individuals across multiple camera feeds without facial recognition.",
+    technologies: ["TensorFlow", "JAX", "YOLOv8", "Cloud Deployment"],
+    github: "https://github.com/Maspie/cross-camera-recognition",
+    live: "",
   },
   {
-    title: "Task Management App",
-    description: "A collaborative task management tool with real-time updates and team collaboration features.",
-    technologies: ["TypeScript", "React", "Express", "Socket.io"],
-    github: "#",
-    live: "#",
+    title: "Enhancing Experience of Micro Blogging Sites",
+    description: "Created a K-means clustering algorithm for Twitter disaster data, improving user engagement by 40%. Designed an auto-summary generator for tweets, enhancing comprehension by 30%.",
+    technologies: ["Python", "LangChain", "NLP", "Clustering"],
+    github: "https://github.com/Maspie/microblogging-ai",
+    live: "",
   },
   {
-    title: "Portfolio Website",
-    description: "A modern portfolio website with interactive animations and theme switching capability.",
-    technologies: ["React", "Framer Motion", "Tailwind CSS"],
-    github: "#",
-    live: "#",
+    title: "Customer Lifetime Value Prediction",
+    description: "Optimized insurance data analysis efficiency by 25%, achieving 89.7% accuracy in customer lifetime value prediction using advanced regression models and PCA-based segmentation.",
+    technologies: ["Python", "Seaborn", "PCA", "Regression"],
+    github: "https://github.com/Maspie/customer-ltv-prediction",
+    live: "",
+  },
+  {
+    title: "Neurodegenerative Disease Detection",
+    description: "Developed a deep learning model to classify MRI and PET scans for neurodegenerative diseases. Improved feature extraction with CNNs, achieving higher diagnostic accuracy.",
+    technologies: ["Python", "Keras", "OpenCV", "Medical Imaging"],
+    github: "https://github.com/Maspie/neuro-disease-detection",
+    live: "",
   },
 ];
 
@@ -63,14 +70,22 @@ export function Projects() {
               </div>
 
               <div className="flex gap-4">
-                <Button variant="outline" size="sm" className="gap-2">
-                  <Github className="w-4 h-4" />
-                  Code
-                </Button>
-                <Button variant="outline" size="sm" className="gap-2">
-                  <ExternalLink className="w-4 h-4" />
-                  Live
-                </Button>
+                {project.github && (
+                  <Button asChild variant="outline" size="sm" className="gap-2">
+                    <a href={project.github} target="_blank" rel="noopener noreferrer">
+                      <Github className="w-4 h-4" />
+                      Code
+                    </a>
+                  </Button>
+                )}
+                {project.live && (
+                  <Button asChild variant="outline" size="sm" className="gap-2">
+                    <a href={project.live} target="_blank" rel="noopener noreferrer">
+                      <ExternalLink className="w-4 h-4" />
+                      Live
+                    </a>
+                  </Button>
+                )}
               </div>
             </motion.div>
           ))}
