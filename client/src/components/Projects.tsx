@@ -33,9 +33,16 @@ const projects = [
   },
   {
     title: "Error-Correcting Image Codec",
-    description: "Implemented an image compression and error correction framework using Discrete Cosine Transform (DCT) and Reed-Solomon coding. The system ensures robust image recovery even in the presence of transmission-induced errors.",
-    technologies: ["Python", "DCT", "Reed-Solomon", "Matplotlib", "NumPy"],
+    description: "Developed an image compression and transmission error resilience toolkit using Discrete Cosine Transform (DCT) for compression and Reed-Solomon coding for error correction.",
+    technologies: ["Python", "NumPy", "SciPy", "Reed-Solomon", "DCT", "Matplotlib"],
     github: "https://github.com/Maspie/Error-Correcting-Image-Codec",
+    live: "",
+  },
+  {
+    title: "Emotion Detection from Video Streaming",
+    description: "Built a deep learning-based emotion detection system using facial expression recognition in real-time video streams, leveraging OpenCV and TensorFlow.",
+    technologies: ["Python", "OpenCV", "TensorFlow", "Keras", "Computer Vision"],
+    github: "https://github.com/Maspie/Emotion-Detection-from-a-video-streaming",
     live: "",
   },
 ];
