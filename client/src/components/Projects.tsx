@@ -52,6 +52,13 @@ const projects = [
     github: "https://github.com/Maspie/Face-Detection-and-Recognition-for-User-Authentication",
     live: "",
   },
+  {
+    title: "Java File Security System",
+    description: "Implemented a secure file storage system using DES encryption. Users can encrypt, store, and share files using email authentication, security keys, and remote access verification.",
+    technologies: ["Java", "DES Encryption", "File Security", "Email Authentication"],
+    github: "https://github.com/Maspie/Java-File-Security-System",
+    live: "",
+  },
 ];
 
 export function Projects() {
